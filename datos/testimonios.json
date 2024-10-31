@@ -1,0 +1,38 @@
+[
+    {
+        "id": 1,
+        "nombre": "Juan Ignacio",
+        "testimonio": "Compré aquí y la verdad la experiencia es increíble, excelente calidad de las figuras.",
+        "edad": 25,
+        "profesion": "Analista de sistemas",
+        "ciudad": "Buenos Aires",
+        "imagen": "img/testimonios/juan.jpg"
+    },
+    {
+        "id": 2,
+        "nombre": "María Laura",
+        "testimonio": "Los productos son geniales y el envío fue rápido. ¡Volveré a comprar aquí!",
+        "profesion": "Estudiante de enfermería",
+        "edad": 30,
+        "ciudad": "Cordoba",
+        "imagen": "img/testimonios/maria.jpg"
+    },
+    {
+        "id": 3,
+        "nombre": "Pedro",
+        "testimonio": "¡Me encanta este sitio! Siempre encuentro las últimas novedades en figuras de anime.",
+        "profesion": "Abogado",
+        "edad": 32,
+        "ciudad": "Salta",
+        "imagen": "img/testimonios/pedro.jpg"
+    },
+    {
+        "id": 4,
+        "nombre": "Josefina",
+        "testimonio": "¡Muy recomendable! Un amigo me los hizo conocer y la verdad que no me arrepiento de haber comprado.",
+        "profesion": "Geek por naturaleza",
+        "edad": 28,
+        "ciudad": "Mendoza",
+        "imagen": "img/testimonios/josefina.jpg"
+    }
+]

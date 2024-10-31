@@ -1,0 +1,68 @@
+-- Base de datos GetGeek
+
+CREATE TABLE productos (
+    id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT NOT NULL,
+    personaje VARCHAR(255),
+    precio DECIMAL(10, 2),
+    fechaLanzamiento DATE,
+    descripcion TEXT,
+    novedad BOOLEAN,
+    franquicia_id INT UNSIGNED NOT NULL,
+    marca_id INT UNSIGNED NOT NULL,
+    bajada TEXT,
+    FOREIGN KEY (franquicia_id) REFERENCES franquicias(id),
+    FOREIGN KEY (marca_id) REFERENCES marcas(id)
+);
+
+CREATE TABLE imagenes (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    producto_id INT UNSIGNED NOT NULL,
+    url VARCHAR(255),
+    FOREIGN KEY (producto_id) REFERENCES productos(id)
+);
+
+CREATE TABLE franquicias (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE marcas (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE categorias (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(255) NOT NULL,
+    descripcion TEXT,
+    imagen VARCHAR(255),
+    fecha_creacion DATE
+);
+
+CREATE TABLE productos_categorias (
+    producto_id INT UNSIGNED NOT NULL,
+    categoria_id INT UNSIGNED NOT NULL,
+    PRIMARY KEY (producto_id, categoria_id),
+    FOREIGN KEY (producto_id) REFERENCES productos(id),
+    FOREIGN KEY (categoria_id) REFERENCES categorias(id)
+);
+
+CREATE TABLE usuarios (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    nombre_usuario VARCHAR(255) NOT NULL,
+    nombre_completo VARCHAR(255) NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    rol ENUM('superadmin', 'admin', 'usuario') DEFAULT 'usuario' NOT NULL
+);
+
+CREATE TABLE testimonios (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    usuario_id INT UNSIGNED NOT NULL,
+    testimonio TEXT,
+    edad INT,
+    profesion VARCHAR(255),
+    ciudad VARCHAR(255),
+    imagen VARCHAR(255),
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
+);
