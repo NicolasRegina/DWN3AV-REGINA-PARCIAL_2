@@ -145,11 +145,11 @@ $userData = $_SESSION['loggedIn'] ?? FALSE;
                 <!-- Administrar Catalogo -->
                 <li class="nav-item"><a class="nav-link" href="index.php?sec=admin_catalogo">Administrar Catalogo</a></li>
                 <!-- Administrar Franquicias -->
-                <li class="nav-item"><a class="nav-link" href="index.php?sec=administrar_franquicia">Administrar Franquicias</a></li>
+                <li class="nav-item"><a class="nav-link" href="index.php?sec=admin_franquicia">Administrar Franquicias</a></li>
                 <!-- Administrar Marcas -->
-                <li class="nav-item"><a class="nav-link" href="index.php?sec=administrar_marca">Administrar Marcas</a></li>
+                <li class="nav-item"><a class="nav-link" href="index.php?sec=admin_marca">Administrar Marcas</a></li>
                 <!-- Administrar Categorias -->
-                <li class="nav-item"><a class="nav-link" href="index.php?sec=administrar_categoria">Administrar Categorías</a></li>
+                <li class="nav-item"><a class="nav-link" href="index.php?sec=admin_categoria">Administrar Categorías</a></li>
             </ul>
         </div>
       </div>

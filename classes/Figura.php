@@ -253,7 +253,7 @@ class Figura {
         $query = "INSERT INTO productos VALUES (NULL, :personaje, :precio, :fechaLanzamiento, :descripcion, :novedad, :franquicia_id, :marca_id, :bajada)";
 
         $PDOStatement = $conexion->prepare($query);
-        $PDOStatement->execute(
+        if($PDOStatement->execute(
             [
                 'personaje' => $personaje,
                 'precio' => $precio,
@@ -264,15 +264,44 @@ class Figura {
                 'marca_id' => $marca_id,
                 'bajada' => $bajada
             ]
-        );
+        )){
+            return $conexion->lastInsertId();
+        } else{
+            throw new Exception('No se pudo insertar el producto');
+        };
 
-        return $conexion->lastInsertId();
     }
 
-    //TODO: borrar img original de la base de datos y hacer subida de nueva imagen
-    public function edit($personaje, $precio, $fechaLanzamiento, $descripcion, $novedad, $franquicia_id, $marca_id, $bajada)
+    /**
+     * Inserta una categoría para este producto
+     * @param int $categoria_id
+     * @param int $producto_id
+     */
+    public static function insert_categoria_producto(int $categoria_id, int $producto_id)
     {
+        $conexion = Conexion::getConexion();
+        $query = "INSERT INTO productos_categorias (producto_id, categoria_id) VALUES (:producto_id, :categoria_id)";
 
+        $PDOStatement = $conexion->prepare($query);
+        $PDOStatement->execute(
+            [
+                'producto_id' => $producto_id,
+                'categoria_id' => $categoria_id
+            ]
+        );
+    }
+
+    public static function clear_categoria_producto(int $producto_id)
+    {
+        $conexion = Conexion::getConexion();
+        $query = "DELETE FROM productos_categorias WHERE producto_id = :producto_id";
+
+        $PDOStatement = $conexion->prepare($query);
+        $PDOStatement->execute(['producto_id' => $producto_id]);
+    }
+
+    public function edit($personaje, $franquicia_id, $marca_id, $descripcion, $fechaLanzamiento, $novedad, $precio, $bajada)
+    {
         $conexion = Conexion::getConexion();
         $query = "UPDATE productos SET
         personaje = :personaje,
@@ -282,7 +311,7 @@ class Figura {
         novedad = :novedad,
         franquicia_id = :franquicia_id,
         marca_id = :marca_id,
-        bajada = :bajada,       
+        bajada = :bajada
         WHERE id = :id";
 
         $PDOStatement = $conexion->prepare($query);

@@ -11,10 +11,8 @@ $figura = Figura::productoPorId($id);
 
 	<div class="col-12 col-md-6">
 
-
 		<h2 class="fs-6">Titulo</h2>
 		<p><?= $figura->getPersonaje() ?></p>
-
 
 		<a href="actions/delete_catalogo_acc.php?id=<?= $figura->getId() ?>" role="button" class="d-block btn btn-sm btn-danger mt-4">Eliminar</a>
 	</div>

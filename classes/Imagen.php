@@ -62,26 +62,72 @@ class Imagen {
         return $result ? $result : null;
     }
 
-    public static function subirImagen($directorio, $datosArchivo): string
+    /**
+     * Inserta las imagenes de un producto en particular
+     * @param string $directorio el path donde se encuentra el archivo
+     * @param string $datosArchivo el nombre del archivo
+     * @param string $producto_id el ID del producto a cual corresponde la img
+     */
+    public static function subirImagen($directorio, $datosArchivo, $producto_id): string
     {
-        //le damos un nuevo nombre
-        $og_name = (explode(".", $datosArchivo['name']));
+        // Le damos un nuevo nombre
+        $og_name = explode(".", $datosArchivo['name']);
         $extension = end($og_name);
-        $filename = time() . ".$extension";
+        $filename = time() . uniqid() . ".$extension";
 
+        // Movemos el archivo subido al directorio especificado
         $fileUpload = move_uploaded_file($datosArchivo['tmp_name'], "$directorio/$filename");
-
 
         if (!$fileUpload) {
             throw new Exception("No se pudo subir la imagen");
-        }else{
+        } else {
+            // Insertar en la base de datos
+            $conexion = Conexion::getConexion();
+            $query = "INSERT INTO imagenes (producto_id, url) VALUES (:producto_id, :url)";
+            $PDOStatement = $conexion->prepare($query);
+            $PDOStatement->bindParam(':producto_id', $producto_id, PDO::PARAM_INT);
+            $filename = "img/productos/generales/" . $filename;
+            $PDOStatement->bindParam(':url', $filename, PDO::PARAM_STR);
+
+            if (!$PDOStatement->execute()) {
+                throw new Exception("No se pudo insertar la imagen en la base de datos");
+            }
+
+            return $filename;
+        }
+    }
+
+    public static function updateImagen($oldUrl, $directorio, $datosArchivo): string
+    {
+        // Le damos un nuevo nombre
+        $og_name = explode(".", $datosArchivo['name']);
+        $extension = end($og_name);
+        $filename = time() . uniqid() . ".$extension";
+
+        // Movemos el archivo subido al directorio especificado
+        $fileUpload = move_uploaded_file($datosArchivo['tmp_name'], "$directorio/$filename");
+
+        if (!$fileUpload) {
+            throw new Exception("No se pudo subir la imagen");
+        } else {        
+            $conexion = Conexion::getConexion();
+            $query = "UPDATE imagenes SET url = :newUrl WHERE url = :oldUrl";
+            $PDOStatement = $conexion->prepare($query);
+            $PDOStatement->bindParam(':oldUrl', $oldUrl, PDO::PARAM_STR);
+            $filename = "img/productos/generales/" . $filename;
+            $PDOStatement->bindParam(':newUrl', $filename, PDO::PARAM_STR);
+
+            if (!$PDOStatement->execute()) {
+                throw new Exception("No se pudo actualizar la imagen en la base de datos");
+            }
+
             return $filename;
         }
     }
 
     public static function borrarImagen($archivo): bool
     {
-
+        // error_log($archivo);
         if (file_exists(($archivo))) {
   
             $fileDelete =  unlink($archivo);

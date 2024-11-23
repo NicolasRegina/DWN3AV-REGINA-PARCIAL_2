@@ -11,6 +11,7 @@ try {
    
     Imagen::borrarImagen(__DIR__ . "/../" . $figura->getPortada()->getUrl());
     $figura->delete_imagenes();
+    //TODO: Eliminar las imagenes locales (ver como esta hecho el edit_catalog_acc)
     $figura->clear_categorias();
     $figura->delete();
     

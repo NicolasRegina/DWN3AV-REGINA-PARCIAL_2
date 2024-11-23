@@ -1,42 +1,80 @@
-<?PHP
+<?php
 require_once "../../functions/autoload.php";
 //require_once "classes/Imagen.php";
 
+function reArrayFiles($file_post) {
+    $file_ary = array();
+    $file_count = count($file_post['name']);
+    $file_keys = array_keys($file_post);
+
+    for ($i = 0; $i < $file_count; $i++) {
+        foreach ($file_keys as $key) {
+            $file_ary[$i][$key] = $file_post[$key][$i];
+        }
+    }
+
+    return $file_ary;
+}
+
 $postData = $_POST;
 $fileData = $_FILES['portada'];
+$galeriaData = $_FILES['galeria'];
 
-// echo "<pre>";
-// print_r($_POST);
-// echo "</pre>";
+echo "<pre>";
+print_r($postData);
+echo "</pre>";
 
 // echo "<pre>";
 // print_r($_FILES);
 // echo "</pre>";
 
-// esto se paso a la clase Imagen.php
-// $nombreOriginal = explode(".", $fileData['name']);
-// $extension = end($nombreOriginal);
-////$nombreNuevo = time() . ".$extension"; esto devolvera por ej 123451661.jpg
-// $nombreNuevo = uniqid() . "." . $extension;
+echo "<pre>";
+print_r($fileData);
+print_r(__DIR__ . "/../../");
+echo "</pre>";
 
-// $archivoSubido = move_uploaded_file($fileData['tmp_name'], __DIR__ . "/../../img/productos/" . $nombreNuevo);
-//ahora hay q asignar el nombreNuevo a la propiedad que corresponda el path de la imagen en la base de datos
-//hay q crear una clase que haga desde asignar el nombre orignial hasta devolver el nombre nuevo
-//esto seria la clase Imagen.php
+// Verificar si 'galeria' es un array o un solo archivo
+if (is_array($galeriaData['name'])) {
+    // Reorganizar los archivos de la galería
+    $galeriaFiles = reArrayFiles($galeriaData);
+} else {
+    // Convertir a un array de un solo archivo
+    $galeriaFiles = array($galeriaData);
+}
 
+echo "<pre>";
+print_r($galeriaFiles);
+echo "</pre>";
+
+// die();
+
+//Primero inserto la img para asi obtener su ID
 try {
-    //revisar el portada donde se debe asignar en Figura, ya que este esta indexado
-    $portada = Imagen::subirImagen(__DIR__ . "/../../", $fileData);
-    $idComic = Figura::insert(
-        $postData['personaje'],
+    $producto_id = Figura::insert(
+        $postData['nombre'],
         $postData['precio'],
-        $postData['fechaLanzamiento'],
+        $postData['lanzamiento'],
         $postData['descripcion'],
         $postData['novedad'],
         $postData['franquicia_id'],
         $postData['marca_id'],
         $postData['bajada']
-     );
+    );
+
+    if (isset($postData['categorias']) && !empty($postData['categorias'])) {
+        //Inserta en la tabla pivot "productos_categorias"
+        foreach ($postData['categorias'] as $categoria_id) {
+            Figura::insert_categoria_producto($categoria_id, $producto_id);
+        }
+    }
+
+    // Inserta la portada
+    Imagen::subirImagen(__DIR__ . "/../../img/productos/generales", $fileData, $producto_id);
+
+    // Inserta cada archivo de la galería
+    foreach ($galeriaFiles as $file) {
+        Imagen::subirImagen(__DIR__ . "/../../img/productos/generales", $file, $producto_id);
+    }
 
 } catch (\Exception $e) {
     echo "<pre>";
@@ -44,6 +82,5 @@ try {
     echo "<pre>";
     die("No se pudo agregar el producto");
 }
-
 
 header('Location: ../index.php?sec=admin_catalogo');
