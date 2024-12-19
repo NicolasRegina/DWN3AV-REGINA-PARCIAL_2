@@ -12,10 +12,11 @@ class Imagen {
      */
     public static function get_x_id(int $id) {
         $conexion = Conexion::getConexion();
-        $query = "SELECT * FROM imagenes WHERE id = $id";
+        $query = "SELECT * FROM imagenes WHERE id = :id";
 
         $PDOStatement = $conexion->prepare($query);
         $PDOStatement->setFetchMode(PDO::FETCH_CLASS, self::class);
+        $PDOStatement->bindParam(':id', $id, PDO::PARAM_INT);
         $PDOStatement->execute();
 
         $result = $PDOStatement->fetch();
@@ -31,10 +32,11 @@ class Imagen {
     public static function get_x_id_producto(int $id) {
         $conexion = Conexion::getConexion();
         $query = "SELECT GROUP_CONCAT(url SEPARATOR ', ') as imagenes 
-        FROM imagenes WHERE producto_id = $id";
+        FROM imagenes WHERE producto_id = :id";
 
         $PDOStatement = $conexion->prepare($query);
         $PDOStatement->setFetchMode(PDO::FETCH_CLASS, self::class);
+        $PDOStatement->bindParam(':id', $id, PDO::PARAM_INT);
         $PDOStatement->execute();
 
         $result = $PDOStatement->fetch();
@@ -51,10 +53,11 @@ class Imagen {
 
         $conexion = Conexion::getConexion();
 
-        $query = "SELECT * FROM imagenes WHERE producto_id = $id ORDER BY id ASC LIMIT 1";
+        $query = "SELECT * FROM imagenes WHERE producto_id = :id ORDER BY id ASC LIMIT 1";
 
         $PDOStatement = $conexion->prepare($query);
         $PDOStatement->setFetchMode(PDO::FETCH_CLASS, self::class);
+        $PDOStatement->bindParam(':id', $id, PDO::PARAM_INT);
         $PDOStatement->execute();
 
         $result = $PDOStatement->fetch();

@@ -33,7 +33,7 @@ class Autenticacion
 
                 return $datosLogin['rol'];
             } else {
-                echo "<p>EL PASSWORD NO ES CORRECTO! INTRUSO!</p>";
+                echo "<p>EL PASSWORD NO ES CORRECTO!</p>";
                 return FALSE;
             }
         } else {

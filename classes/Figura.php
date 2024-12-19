@@ -80,24 +80,15 @@ class Figura {
      */
     public static function productoPorId(int $idProducto): ?Figura {
         $conexion = Conexion::getConexion();
-        $query = "SELECT * FROM productos p
-        WHERE p.id = ?";
+        $query = "SELECT * FROM productos p WHERE p.id = :id";
 
         $PDOStatement = $conexion->prepare($query);
         $PDOStatement->setFetchMode(PDO::FETCH_ASSOC);
-        $PDOStatement->execute([$idProducto]);
+        $PDOStatement->bindParam(':id', $idProducto, PDO::PARAM_INT);
+        $PDOStatement->execute();
 
         $result = self::createFigura($PDOStatement->fetch());
 
-        // echo "<pre>";
-        // print_r(explode(', ', $result->imagenes->imagenes));        
-        // echo "</pre>";
-
-        // echo "<pre>";
-        // print_r($result);        
-        // echo "</pre>";
-
-       
         return $result ? $result : null;
     }
 
@@ -110,11 +101,11 @@ class Figura {
     public static function catalogoPorMarca(string $idMarca): array {
 
         $conexion = Conexion::getConexion();
-        $query = "SELECT * FROM productos p
-        WHERE p.marca_id = $idMarca";
+        $query = "SELECT * FROM productos p WHERE p.marca_id = :idMarca";
 
         $PDOStatement = $conexion->prepare($query);
         $PDOStatement->setFetchMode(PDO::FETCH_ASSOC);
+        $PDOStatement->bindParam(':idMarca', $idMarca, PDO::PARAM_STR);
         $PDOStatement->execute();
 
         while ($result = $PDOStatement->fetch()) {
@@ -146,11 +137,11 @@ class Figura {
     public static function catalogoPorFranquicia(string $idFranquicia): array {
 
         $conexion = Conexion::getConexion();
-        $query = "SELECT * FROM productos p
-        WHERE p.franquicia_id = $idFranquicia";
+        $query = "SELECT * FROM productos p WHERE p.franquicia_id = :idFranquicia";
 
         $PDOStatement = $conexion->prepare($query);
         $PDOStatement->setFetchMode(PDO::FETCH_ASSOC);
+        $PDOStatement->bindParam(':idFranquicia', $idFranquicia, PDO::PARAM_STR);
         $PDOStatement->execute();
 
         while ($result = $PDOStatement->fetch()) {
@@ -184,10 +175,11 @@ class Figura {
         $conexion = Conexion::getConexion();
         $query = "SELECT * FROM productos p
         INNER JOIN productos_categorias pc ON p.id = pc.producto_id
-        WHERE pc.categoria_id = $idCategoria";
+        WHERE pc.categoria_id = :idCategoria";
 
         $PDOStatement = $conexion->prepare($query);
         $PDOStatement->setFetchMode(PDO::FETCH_ASSOC);
+        $PDOStatement->bindParam(':idCategoria', $idCategoria, PDO::PARAM_STR);
         $PDOStatement->execute();
 
         while ($result = $PDOStatement->fetch()) {
