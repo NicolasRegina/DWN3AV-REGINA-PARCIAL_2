@@ -66,3 +66,21 @@ CREATE TABLE testimonios (
     imagen VARCHAR(255),
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
 );
+
+CREATE TABLE compras (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    usuario_id INT UNSIGNED NOT NULL,
+    importe FLOAT(8, 2),
+    fecha DATE,
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
+);
+
+CREATE TABLE items_x_compras (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    compra_id INT UNSIGNED NOT NULL,
+    producto_id INT UNSIGNED NOT NULL,
+    cantidad INT NOT NULL,
+    FOREIGN KEY (compra_id) REFERENCES compras(id),
+    FOREIGN KEY (producto_id) REFERENCES productos(id)
+);
+

@@ -11,10 +11,9 @@ try {
     Marca::borrarMarca($id);
 
 } catch (\Exception $e) {
-    echo "<pre>";
-    print_r($e->getMessage());
-    echo "<pre>";
-    die("No se pudo eliminar la marca");
+    Alerta::add_alerta("danger", "No se pudo eliminar la marca");
+    header('Location: ../index.php?sec=admin_marca');
 }
 
+Alerta::add_alerta("danger", "La marca se eliminó correctamente");
 header('Location: ../index.php?sec=admin_marca');

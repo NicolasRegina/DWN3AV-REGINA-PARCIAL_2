@@ -1,3 +1,7 @@
+    <div>
+        <?= Alerta::get_alertas(); ?>
+    </div>
+        
     <!-- SECTION NOSOTROS -->
     <section id="nosotros" class="section">
       <div class="p-4 bg-body-tertiary rounded-3">

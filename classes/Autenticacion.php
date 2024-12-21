@@ -19,12 +19,9 @@ class Autenticacion
 
         if ($datosUsuario) {
 
-            echo "<p>El usuario ingresado SI se encontró en nuestra base de datos.</p>";
-
             if (password_verify($password, $datosUsuario->getPassword())) {
-                echo "<p>EL PASSWORD ES CORRECTO! LOGUEAR!</p>";
 
-                $datosLogin['username'] = $datosUsuario->getNombre_usuario();
+                $datosLogin['nombre_usuario'] = $datosUsuario->getNombre_usuario();
                 $datosLogin['nombre_completo'] = $datosUsuario->getNombre_completo();
                 $datosLogin['id'] = $datosUsuario->getId();
                 $datosLogin['rol'] = $datosUsuario->getRol();
@@ -33,11 +30,11 @@ class Autenticacion
 
                 return $datosLogin['rol'];
             } else {
-                echo "<p>EL PASSWORD NO ES CORRECTO!</p>";
+                Alerta::add_alerta('danger', "El password ingresado no es correcto.");
                 return FALSE;
             }
         } else {
-            echo "<p>El usuario ingresado NO se encontró en nuestra base de datos.</p>";
+            Alerta::add_alerta('warning', "El usuario ingresado no se encontró en nuestra base de datos.");
             return NULL;
         }
     }

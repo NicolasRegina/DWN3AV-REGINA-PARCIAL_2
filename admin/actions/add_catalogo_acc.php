@@ -71,16 +71,25 @@ try {
     // Inserta la portada
     Imagen::subirImagen(__DIR__ . "/../../img/productos/generales", $fileData, $producto_id);
 
-    // Inserta cada archivo de la galería
-    foreach ($galeriaFiles as $file) {
-        Imagen::subirImagen(__DIR__ . "/../../img/productos/generales", $file, $producto_id);
+    if(isset($galeriaFiles) && !empty($galeriaFiles)) {
+        // Filtrar archivos válidos
+        $validFiles = array_filter($galeriaFiles, function($file) {
+            return $file['error'] === UPLOAD_ERR_OK;
+        });
+
+        // Verificar si hay archivos válidos
+        if (!empty($validFiles)) {
+            // Inserta cada archivo de la galería
+            foreach ($validFiles as $file) {
+                Imagen::subirImagen(__DIR__ . "/../../img/productos/generales", $file, $producto_id);
+            }
+        }
     }
 
 } catch (\Exception $e) {
-    echo "<pre>";
-    print_r($e->getMessage());
-    echo "<pre>";
-    die("No se pudo agregar el producto");
+    Alerta::add_alerta("danger", "No se pudo agregar el producto");
+    header('Location: ../index.php?sec=admin_catalogo');
 }
 
+Alerta::add_alerta("success", "El producto se agregó correctamente");
 header('Location: ../index.php?sec=admin_catalogo');

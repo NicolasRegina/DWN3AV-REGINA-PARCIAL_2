@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 12-07-2024 a las 09:16:29
+-- Tiempo de generación: 21-12-2024 a las 02:30:38
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
 
@@ -49,6 +49,19 @@ INSERT INTO `categorias` (`id`, `nombre`, `descripcion`, `imagen`, `fecha_creaci
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `compras`
+--
+
+CREATE TABLE `compras` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `usuario_id` int(10) UNSIGNED NOT NULL,
+  `importe` float(8,2) DEFAULT NULL,
+  `fecha` date DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `franquicias`
 --
 
@@ -83,7 +96,7 @@ CREATE TABLE `imagenes` (
 --
 
 INSERT INTO `imagenes` (`id`, `producto_id`, `url`) VALUES
-(1, 1, 'img/productos/BANDAI/A17-1.webp'),
+(1, 1, 'img/productos/generales/173474462467661a309abd2.webp'),
 (2, 1, 'img/productos/BANDAI/A17-2.webp'),
 (3, 1, 'img/productos/BANDAI/A17-3.webp'),
 (4, 2, 'img/productos/banpresto/chichi-milk-db-1.webp'),
@@ -139,7 +152,20 @@ INSERT INTO `imagenes` (`id`, `producto_id`, `url`) VALUES
 (54, 28, 'img/productos/ivrea/dbm_10.webp'),
 (55, 29, 'img/productos/ivrea/dbm_11.webp'),
 (56, 30, 'img/productos/ivrea/dbm_12.webp'),
-(57, 31, 'img/productos/ivrea/dbm_13.webp');
+(59, 33, 'img/productos/generales/173474462467661a309abd2.webp');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `items_x_compras`
+--
+
+CREATE TABLE `items_x_compras` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `compra_id` int(10) UNSIGNED NOT NULL,
+  `producto_id` int(10) UNSIGNED NOT NULL,
+  `cantidad` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -162,7 +188,8 @@ INSERT INTO `marcas` (`id`, `nombre`) VALUES
 (3, 'Tsume'),
 (4, 'Good Smile Company'),
 (5, 'Ivrea'),
-(6, 'Otros');
+(6, 'Otros'),
+(9, 'Maradona');
 
 -- --------------------------------------------------------
 
@@ -216,7 +243,7 @@ INSERT INTO `productos` (`id`, `personaje`, `precio`, `fechaLanzamiento`, `descr
 (28, 'Manga - Dragon Ball 10', 5400.00, '1986-11-26', 'Reediciones de los mangas originalesd e Dragon Ball, colecciona todos los mangas y no te pierdas ninguno, solo en Get Geek!', 0, 1, 5, 'El manga original se publicó entre 1984 y 1995 en la revista Weekly Shonen Jump. En los inicios era imposible predecir lo que Dragon Ball significó para la cultura popular de Japón y de prácticamente todo el mundo. Colecciona todos los mangas y no te pierdas ninguno, solo en Get Geek!'),
 (29, 'Manga - Dragon Ball 11', 5400.00, '1986-12-26', 'Reediciones de los mangas originalesd e Dragon Ball, colecciona todos los mangas y no te pierdas ninguno, solo en Get Geek!', 0, 1, 5, 'El manga original se publicó entre 1984 y 1995 en la revista Weekly Shonen Jump. En los inicios era imposible predecir lo que Dragon Ball significó para la cultura popular de Japón y de prácticamente todo el mundo. Colecciona todos los mangas y no te pierdas ninguno, solo en Get Geek!'),
 (30, 'Manga - Dragon Ball 12', 5400.00, '1987-01-26', 'Reediciones de los mangas originalesd e Dragon Ball, colecciona todos los mangas y no te pierdas ninguno, solo en Get Geek!', 0, 1, 5, 'El manga original se publicó entre 1984 y 1995 en la revista Weekly Shonen Jump. En los inicios era imposible predecir lo que Dragon Ball significó para la cultura popular de Japón y de prácticamente todo el mundo. Colecciona todos los mangas y no te pierdas ninguno, solo en Get Geek!'),
-(31, 'Manga - Dragon Ball 13', 5400.00, '1987-02-26', 'Reediciones de los mangas originalesd e Dragon Ball, colecciona todos los mangas y no te pierdas ninguno, solo en Get Geek!', 0, 1, 5, 'El manga original se publicó entre 1984 y 1995 en la revista Weekly Shonen Jump. En los inicios era imposible predecir lo que Dragon Ball significó para la cultura popular de Japón y de prácticamente todo el mundo. Colecciona todos los mangas y no te pierdas ninguno, solo en Get Geek!');
+(33, 'Androide 17 -TEST TEST TEST', 84000.00, '2022-08-01', 'The Android Battle – Androide 17 – Dragon Ball', 0, 1, 1, '¡Lleva a casa al poderoso Androide 17! Revive las épicas batallas de la batalla de los androides con este increíble coleccionable. Detalles preciosos y materiales de alta calidad hacen de esta figura una pieza imprescindible para cualquier fan de Dragon Ball. ¡No te pierdas la oportunidad de agregar a Androide 17 a tu colección!');
 
 -- --------------------------------------------------------
 
@@ -269,8 +296,7 @@ INSERT INTO `productos_categorias` (`producto_id`, `categoria_id`) VALUES
 (27, 2),
 (28, 2),
 (29, 2),
-(30, 2),
-(31, 2);
+(30, 2);
 
 -- --------------------------------------------------------
 
@@ -318,12 +344,12 @@ CREATE TABLE `usuarios` (
 --
 
 INSERT INTO `usuarios` (`id`, `nombre_usuario`, `nombre_completo`, `email`, `password`, `rol`) VALUES
-(1, 'juanignacio', 'Juan Ignacio', 'juan_ignacio@gmail.com', 'b4af804009cb036a4ccdc33431ef9ac9', 'usuario'),
-(2, 'marialaura', 'María Laura', 'maria_laura@gmail.com', 'b4af804009cb036a4ccdc33431ef9ac9', 'usuario'),
-(3, 'pedro', 'Pedro', 'pedro@davinci.edu.ar', 'b4af804009cb036a4ccdc33431ef9ac9', 'usuario'),
-(4, 'josefina', 'Josefina', 'josefina@davinci.edu.ar', 'b4af804009cb036a4ccdc33431ef9ac9', 'usuario'),
-(5, 'nicolas', 'Nicolás Regina', 'nicolas.regina@davinci.edu.ar', 'b4af804009cb036a4ccdc33431ef9ac9', 'admin'),
-(6, 'jorge', 'Jorge Perez', 'jorge.perez@davinci.edu.ar', 'b4af804009cb036a4ccdc33431ef9ac9', 'superadmin');
+(1, 'juanignacio', 'Juan Ignacio', 'juan_ignacio@gmail.com', '$2y$10$wm12smhJ5E3iwy3Mg37PP.hzoyu6sls3bKqA/tYRlkY5j9z/AAFn6', 'usuario'),
+(2, 'marialaura', 'María Laura', 'maria_laura@gmail.com', '$2y$10$wm12smhJ5E3iwy3Mg37PP.hzoyu6sls3bKqA/tYRlkY5j9z/AAFn6', 'usuario'),
+(3, 'pedro', 'Pedro', 'pedro@davinci.edu.ar', '$2y$10$wm12smhJ5E3iwy3Mg37PP.hzoyu6sls3bKqA/tYRlkY5j9z/AAFn6', 'usuario'),
+(4, 'josefina', 'Josefina', 'josefina@davinci.edu.ar', '$2y$10$wm12smhJ5E3iwy3Mg37PP.hzoyu6sls3bKqA/tYRlkY5j9z/AAFn6', 'usuario'),
+(5, 'nicolas', 'Nicolás Regina', 'nicolas.regina@davinci.edu.ar', '$2y$10$wm12smhJ5E3iwy3Mg37PP.hzoyu6sls3bKqA/tYRlkY5j9z/AAFn6', 'admin'),
+(6, 'jorge', 'Jorge Perez', 'jorge.perez@davinci.edu.ar', '$2y$10$wm12smhJ5E3iwy3Mg37PP.hzoyu6sls3bKqA/tYRlkY5j9z/AAFn6', 'superadmin');
 
 --
 -- Índices para tablas volcadas
@@ -336,6 +362,13 @@ ALTER TABLE `categorias`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indices de la tabla `compras`
+--
+ALTER TABLE `compras`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `usuario_id` (`usuario_id`);
+
+--
 -- Indices de la tabla `franquicias`
 --
 ALTER TABLE `franquicias`
@@ -346,6 +379,14 @@ ALTER TABLE `franquicias`
 --
 ALTER TABLE `imagenes`
   ADD PRIMARY KEY (`id`),
+  ADD KEY `producto_id` (`producto_id`);
+
+--
+-- Indices de la tabla `items_x_compras`
+--
+ALTER TABLE `items_x_compras`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `compra_id` (`compra_id`),
   ADD KEY `producto_id` (`producto_id`);
 
 --
@@ -394,6 +435,12 @@ ALTER TABLE `categorias`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
+-- AUTO_INCREMENT de la tabla `compras`
+--
+ALTER TABLE `compras`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT de la tabla `franquicias`
 --
 ALTER TABLE `franquicias`
@@ -403,19 +450,25 @@ ALTER TABLE `franquicias`
 -- AUTO_INCREMENT de la tabla `imagenes`
 --
 ALTER TABLE `imagenes`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=68;
+
+--
+-- AUTO_INCREMENT de la tabla `items_x_compras`
+--
+ALTER TABLE `items_x_compras`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `marcas`
 --
 ALTER TABLE `marcas`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT de la tabla `productos`
 --
 ALTER TABLE `productos`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
 
 --
 -- AUTO_INCREMENT de la tabla `testimonios`
@@ -434,10 +487,23 @@ ALTER TABLE `usuarios`
 --
 
 --
+-- Filtros para la tabla `compras`
+--
+ALTER TABLE `compras`
+  ADD CONSTRAINT `compras_ibfk_1` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`);
+
+--
 -- Filtros para la tabla `imagenes`
 --
 ALTER TABLE `imagenes`
   ADD CONSTRAINT `imagenes_ibfk_1` FOREIGN KEY (`producto_id`) REFERENCES `productos` (`id`);
+
+--
+-- Filtros para la tabla `items_x_compras`
+--
+ALTER TABLE `items_x_compras`
+  ADD CONSTRAINT `items_x_compras_ibfk_1` FOREIGN KEY (`compra_id`) REFERENCES `compras` (`id`),
+  ADD CONSTRAINT `items_x_compras_ibfk_2` FOREIGN KEY (`producto_id`) REFERENCES `productos` (`id`);
 
 --
 -- Filtros para la tabla `productos`

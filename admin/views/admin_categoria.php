@@ -11,6 +11,11 @@
         <div class="row my-5">
             <div class="col">
                 <h2 class="text-center mb-5 fw-bold">Administración de Categorias</h2>
+
+                <div>
+                    <?= Alerta::get_alertas(); ?>
+                </div>
+
                 <div class="row mb-5 d-flex align-items-center">
                     <table class="table">
                         <thead>

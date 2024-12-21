@@ -93,10 +93,10 @@ if (!array_key_exists($seccion, $secciones_validas)) {
 } else {
 
     $vista = $seccion;
-    //TODO: Chequear si el usuario tiene permisos para acceder a la sección
-    // if ($secciones_validas[$seccion]['restringido']) {
-    //     (new Autenticacion())->verify();
-    // }
+    //Chequea si el usuario tiene permisos para acceder a la sección
+    if ($secciones_validas[$seccion]['restringido']) {
+        (new Autenticacion())->verify();
+    }
 
     $titulo = $secciones_validas[$seccion]['titulo'];
 }
@@ -131,7 +131,7 @@ $userData = $_SESSION['loggedIn'] ?? FALSE;
     <!-- NAVBAR -->
     <nav class="navbar navbar-dark bg-dark navbar-expand-sm sticky-top rounded-bottom">
       <div class="container">
-        <a class="navbar-brand font-zero" href="index.php">
+        <a class="navbar-brand font-zero" href="../index.php">
           <img src="../img/logo.png" alt="Logo Get Geek" height="70">
           Panel de Administración
         </a>
@@ -150,6 +150,15 @@ $userData = $_SESSION['loggedIn'] ?? FALSE;
                 <li class="nav-item"><a class="nav-link" href="index.php?sec=admin_marca">Administrar Marcas</a></li>
                 <!-- Administrar Categorias -->
                 <li class="nav-item"><a class="nav-link" href="index.php?sec=admin_categoria">Administrar Categorías</a></li>
+                <!-- si el usuario esta logged, se muestra su nombre -->
+                <?PHP if ($userData) { ?>
+                    <li class="nav-item">
+                        <a class="nav-link bg-danger text-light rounded me-2" href="#">🙍‍♂️​ <?= $userData['nombre_completo'] ?? "" ?> </a>
+                    </li>
+                <?PHP } ?>
+                <li class="nav-item <?= $userData ? "" : "d-none" ?>">
+                    <a class="nav-link fw-bold" href="actions/auth_logout.php">Logout <span class="fw-light"></span></a>
+                </li>
             </ul>
         </div>
       </div>

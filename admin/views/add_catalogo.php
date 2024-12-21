@@ -63,7 +63,7 @@ $categorias = Categoria::lista_completa();
                 <div class="col-md-2 mb-3">
                     <label for="novedad" class="form-label">¿Es Novedad?</label>
                     <div class="form-check">
-                        <input type="hidden" name="novedad" value="false"> 
+                        <input type="hidden" name="novedad" value="false" required> 
                         <input 
                         class="form-check-input" 
                         type="checkbox" 

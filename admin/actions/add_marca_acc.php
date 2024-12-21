@@ -15,10 +15,9 @@ try {
     Marca::insertMarca($name);
 
 } catch (\Exception $e) {
-    echo "<pre>";
-    print_r($e->getMessage());
-    echo "<pre>";
-    die("No se pudo agregar la marca");
+    Alerta::add_alerta("danger", "No se pudo agregar la marca");
+    header('Location: ../index.php?sec=admin_marca');
 }
 
+Alerta::add_alerta("success", "La marca se agregó correctamente");
 header('Location: ../index.php?sec=admin_marca');

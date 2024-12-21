@@ -15,10 +15,9 @@ try {
     Categoria::insertCategoria($name);
 
 } catch (\Exception $e) {
-    echo "<pre>";
-    print_r($e->getMessage());
-    echo "<pre>";
-    die("No se pudo agregar la categoría");
+    Alerta::add_alerta("danger", "No se pudo agregar la categoría");
+    header('Location: ../index.php?sec=admin_categoria');
 }
 
+Alerta::add_alerta("success", "La categoría se agregó correctamente");
 header('Location: ../index.php?sec=admin_categoria');

@@ -86,11 +86,10 @@ try {
         $postData['bajada']
     );
 } catch (\Exception $e) {
-    echo "<pre>";
-    print_r($e->getMessage());
-    echo "<pre>";
-    die("No se pudo editar el producto");
+    Alerta::add_alerta("danger", "No se pudo editar el producto");
+    header('Location: ../index.php?sec=admin_catalogo');
 }
 
 
+Alerta::add_alerta("success", "El producto se edito correctamente");
 header('Location: ../index.php?sec=admin_catalogo');

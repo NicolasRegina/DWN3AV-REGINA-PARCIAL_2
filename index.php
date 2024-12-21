@@ -34,25 +34,40 @@ $categorias = Categoria::lista_categorias();
 
 $secciones_validas = [
     "inicio" => [
-        "titulo" => "Bienvenidos"
+        "titulo" => "Bienvenidos",
+        "restringido" => FALSE
     ], 
     "detalle_producto" => [
-      "titulo" => "Detalle de producto"
+      "titulo" => "Detalle de producto",
+        "restringido" => FALSE
     ],
     "catalogo" => [
-      "titulo" => "Nuestro catálogo"
+      "titulo" => "Nuestro catálogo",
+        "restringido" => FALSE
     ],
     "testimonios" => [
-      "titulo" => "Testimonios"
+      "titulo" => "Testimonios",
+        "restringido" => FALSE
     ],
     "contacto" => [
-      "titulo" => "Contacto"
+      "titulo" => "Contacto",
+        "restringido" => FALSE
     ],
     "enviar_formulario" => [
-      "titulo" => "Datos formulario"
+      "titulo" => "Datos formulario",
+        "restringido" => FALSE
     ],
     "login" => [
-      "titulo" => "Iniciar Sesión"
+      "titulo" => "Iniciar Sesión",
+        "restringido" => FALSE
+    ],
+    "carrito" => [
+        "titulo" => "Carrito de compras",
+        "restringido" => FALSE
+    ],
+    "finalizar_pago" => [
+        "titulo" => "Finalizar Pago",
+        "restringido" => TRUE
     ]
 ];
 
@@ -65,7 +80,17 @@ if (!array_key_exists($seccion, $secciones_validas)) {
     $titulo = "404: Página no encontrada";
 } else {
     $vista = $seccion;
+
+    if ($secciones_validas[$seccion]['restringido']) {
+      Autenticacion::verify();
+    }
+
     $titulo = $secciones_validas[$seccion]['titulo'];
+}
+
+// Inicializa $_SESSION['loggedIn']
+if (!isset($_SESSION['loggedIn'])) {
+    $_SESSION['loggedIn'] = FALSE;
 }
 
 $userData = $_SESSION['loggedIn'] ?? FALSE;
@@ -156,9 +181,9 @@ $userData = $_SESSION['loggedIn'] ?? FALSE;
             <li class="nav-item"><a class="nav-link" href="index.php?sec=testimonios">Testimonios</a></li>
             <!-- Contacto -->
             <li class="nav-item"><a class="nav-link" href="index.php?sec=contacto">Contacto</a></li>
-            <!-- TODO: hacer funcional la sec admin/actions/auth_login.php quitar el d-none del a -->
+            <!-- Login -->
             <li class="nav-item <?= $userData ? "d-none" : "" ?>">
-              <a class="nav-link fw-bold d-none" href="index.php?sec=login">Login</a>
+              <a class="nav-link fw-bold" href="index.php?sec=login">Login</a>
             </li>
 
             <!-- si el usuario esta logged, se muestra su nombre -->
@@ -168,11 +193,13 @@ $userData = $_SESSION['loggedIn'] ?? FALSE;
                 </li>
             <?PHP } ?>
 
-            <!-- TODO: hacer la sec admin/actions/auth_logout.php -->
             <li class="nav-item <?= $userData ? "" : "d-none" ?>">
                 <a class="nav-link fw-bold" href="admin/actions/auth_logout.php">Logout <span class="fw-light"></span></a>
             </li>
 
+            <li class="nav-item">
+                <a class="nav-link bg-danger text-light rounded me-2" href="index.php?sec=carrito">🛒 Carrito</a>
+            </li>            
           </ul>
         </div>
       </div>

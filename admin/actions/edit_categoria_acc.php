@@ -16,10 +16,9 @@ try {
     Categoria::editCategoria($id, $name);
 
 } catch (\Exception $e) {
-    echo "<pre>";
-    print_r($e->getMessage());
-    echo "<pre>";
-    die("No se pudo editar la categoría");
+    Alerta::add_alerta("danger", "No se pudo editar la categoría");
+    header('Location: ../index.php?sec=admin_categoria');
 }
 
+Alerta::add_alerta("success", "La categoría se edito correctamente");
 header('Location: ../index.php?sec=admin_categoria');

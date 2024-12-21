@@ -16,10 +16,9 @@ try {
     Franquicia::editFranquicia($id, $name);
 
 } catch (\Exception $e) {
-    echo "<pre>";
-    print_r($e->getMessage());
-    echo "<pre>";
-    die("No se pudo editar la franquicia");
+    Alerta::add_alerta("danger", "No se pudo editar la franquicia");
+    header('Location: ../index.php?sec=admin_franquicia');
 }
 
+Alerta::add_alerta("success", "La franquicia se edito correctamente");
 header('Location: ../index.php?sec=admin_franquicia');

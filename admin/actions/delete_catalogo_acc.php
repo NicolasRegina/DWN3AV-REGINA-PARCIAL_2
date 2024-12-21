@@ -19,10 +19,9 @@ try {
 
 
 } catch (\Exception $e) {
-    echo "<pre>";
-    print_r($e->getMessage());
-    echo "<pre>";
-    die("No se pudo eliminar el producto");
+    Alerta::add_alerta("danger", "No se pudo eliminar el producto");
+    header('Location: ../index.php?sec=admin_catalogo');
 }
 
+Alerta::add_alerta("danger", "El producto se eliminó correctamente");
 header('Location: ../index.php?sec=admin_catalogo');

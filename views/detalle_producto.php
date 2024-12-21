@@ -18,7 +18,7 @@ $figura = Figura::productoPorId($id);
                     </div>
                     <div class="col-md-8">
                         <p class="fs-5"><?= $figura->getBajada(); ?></p>
-                                <span class="d-block"><strong>Precio:</strong> $<?= number_format($figura->getPrecio(), 2); ?></span>
+                                <span class="d-block fs-3 mb-3 fw-bold text-danger"><strong>Precio:</strong> $<?= number_format($figura->getPrecio(), 2); ?></span>
                                 <span class="d-block"><strong>Fecha de Lanzamiento:</strong> <?= date('d-m-Y', strtotime($figura->getFechaLanzamiento())); ?></span>
                                 <span class="d-block"><strong>Franquicia:</strong> <?= $figura->getFranquicia()->getNombre(); ?></span>
                                 <span class="d-block"><strong>Marca:</strong> <?= $figura->getMarca()->getNombre(); ?></span>
@@ -28,7 +28,19 @@ $figura = Figura::productoPorId($id);
                                     <span class="badge bg-warning text-dark">Novedad</span>
                                 <?php } ?>
                                 <br>
-                                <a href="#" class="btn btn-primary mt-3" style="width: 31%;">Agregar al carrito</a>      
+                                <div class="card-body flex-grow-0 mt-auto">
+                                <form action="admin/actions/add_item_acc.php" method="GET" class="row">
+                                    <div class="col-6 d-flex align-items-center">
+                                        <label for="q" class="fw-bold me-2">Cantidad: </label>
+                                        <input type="number" class="form-control" value="1" name="q" id="q">
+                                    </div>
+                                    <div class="col-6">
+                                        <input type="submit" value="AGREGAR A CARRITO" class="btn btn-danger w-100 fw-bold">
+                                        <input type="hidden" value="<?= $id ?>" name="id" id="id">
+
+                                    </div>
+                                </form>
+                            </div>  
                     </div>
                 </div>
             </div>

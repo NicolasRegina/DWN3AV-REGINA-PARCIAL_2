@@ -15,10 +15,9 @@ try {
     Franquicia::insertFranquicia($name);
 
 } catch (\Exception $e) {
-    echo "<pre>";
-    print_r($e->getMessage());
-    echo "<pre>";
-    die("No se pudo agregar la franquicia");
+    Alerta::add_alerta("danger", "No se pudo agregar la franquicia");
+    header('Location: ../index.php?sec=admin_franquicia');
 }
 
+Alerta::add_alerta("success", "La franquicia se agregó correctamente");
 header('Location: ../index.php?sec=admin_franquicia');
